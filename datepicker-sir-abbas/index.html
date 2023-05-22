@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>datepicker ranger</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <form action="test.com" method="get">
+        <input type="date" pickRole="startDate" name="start_date" class="startDate" />
+        <input type="date" pickRole="endDate" name="end_date" class="startDate" disabled />
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        window.startDatePicker = flatpickr(
+            ".startDate",
+            {
+                // minDate: "2022-6-15", 
+                // minDate: new Date('June 16, 2022'), 
+                dateFormat: "Y-m-d",
+                onChange: function (selectedDates, dateStr, instance) {
+
+                    console.log('changed', selectedDates[0]);
+
+                    let startSelectedDate = new Date(window.startDatePicker[0].selectedDates[0])
+                    startSelectedDate.setDate(startSelectedDate.getDate());
+                    let endDateSarting = new Date(startSelectedDate.setDate(startSelectedDate.getDate() + 1));
+
+                    startDatePicker[1].config.minDate = endDateSarting;
+
+
+                    if (
+                        window.startDatePicker[0].element.getAttribute('pickRole') == 'startDate'
+                        &&
+                        startDatePicker[0].selectedDates.length > 0
+
+                    ) {
+                        window.startDatePicker[1].element.disabled = false
+                    }
+                    else if (
+                        window.startDatePicker[1].element.getAttribute('pickRole') == 'startDate'
+                        &&
+                        startDatePicker[1].selectedDates.length > 0
+
+                    ) {
+                        window.startDatePicker[0].element.disabled = false
+                    }
+                },
+            }
+        );
+
+    </script>
+</body>
+
+</html>
